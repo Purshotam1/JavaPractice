@@ -2,7 +2,11 @@ package assignment;
 
 import java.util.Objects;
 
-class Wheel {
+interface RoundObject {
+	public double getDiameter(); 
+}
+
+class Wheel implements RoundObject {
 	final private double rim, tire;
 
 	public Wheel(double rim, double tire) {
@@ -25,17 +29,17 @@ class Wheel {
 
 class Gear {
 	final private double chainring, cog;
-	final private Wheel wheel;
+	private RoundObject wheel = null;
 
 	public Gear(double chainring, double cog) {
 		this.chainring = chainring;
 		this.cog = cog;
 	}
 
-	public Gear(double chainring, double cog, Wheel wheel) {
+	public Gear(double chainring, double cog, RoundObject wheel) {
 		this.chainring = chainring;
 		this.cog = cog;
-		this.wheel = new Wheel(wheel.getRim(), wheel.getTire());
+		this.wheel = wheel;
 	}
 
 	public double getChainring() {
@@ -46,7 +50,7 @@ class Gear {
 		return cog;
 	}
 
-	public Wheel getWheel() {
+	public RoundObject getWheel() {
 		return wheel;
 	}
 
@@ -60,7 +64,12 @@ class Gear {
 	}
 
 	public double getGearInches() {
-		return getRatio() * wheel.getDiameter();
+		if (wheel != null) {
+			return getRatio() * wheel.getDiameter();
+		} else {
+			System.out.println("Wheel variable is null");
+			return -1;
+		}
 	}
 }
 
